@@ -6,14 +6,14 @@ PyFMlab is a python based open-source software package designed to extract visco
 
 To enhance readability, maintainability, and reusability, PyFMLab is organized into three self-contained Python libraries
 
-- PyFMReader -  Data import, export and preprocessing; [Go to PyFMReader](PyFMReader_DyNaMo)
+- PyFMReader -  Data import, export and preprocessing of AFM; [Go to PyFMReader](PyFMReader_DyNaMo)
 - PyFMRheo -  Data analysis tools and routines; [Go to PyFMRheo](PyFMRheo_DyNaMo)
 - PyFMGUI -  A graphical user interface; [Go to PyFMGUI](PyFMGUI_DyNaMo)
 
 
 If you have any ideas, comments, or run into any issues, feel free to open an issue on this repository: 
 
-ADD LINK
+https://github.com/DyNaMo-INSERM/PyFMlab_DyNaMo/issues
 
 Alternatively, you can reach out to us at yogesh.saravanan@inserm.fr ou felix.rico@inserm.fr.
 We’re always happy to hear from you!
@@ -21,7 +21,7 @@ We’re always happy to hear from you!
 
 ## Documentation
 
-Full usage instructions, examples, and model descriptions are available in the [Wiki](https://github.com/DyNaMo-INSERM/PyFMRheo_DyNaMo/wiki).
+Full usage instructions, examples, and model descriptions are available in the [Wiki](https://github.com/DyNaMo-INSERM/PyFMlab_DyNaMo/wiki).
 
 ---
 
@@ -35,8 +35,7 @@ To run, extract the contents of the .zip and run the main.exe file.
 ## To Setup and run from source
 - Clone the repository
 ```
-git clone  
-cd ./PyFMLAB
+git clone  https://github.com/DyNaMo-INSERM/PyFMlab_DyNaMo.git
 ```
 - Create an environment with python 3.9
 ```
@@ -46,18 +45,17 @@ conda activate yourenvname
 
 - Install the dependencies from requirements.txt
 ```
-pip install -r ./PyFMLAB/PyFMGUI/requirements.txt
+pip install -r ./PyFMlab_DyNaMo/PyFMGUI_DyNaMo/requirements.txt
 ```
 - Installing an **editable** version of PyFMReader and PyFMRheo from a local source
 ```
-python3 -m pip install -e ./PyFMLAB/PyFMReader/
-python3 -m pip install -e ./PyFMLAB/PyFMRheo/
-
+python3 -m pip install -e ./PyFMlab_DyNaMo/PyFMReader_DyNaMo
+python3 -m pip install -e ./PyFMlab_DyNaMo/PyFMRheo_DyNaMo
 ```
 
 - Launch the GUI 
 ```
-python ./PyFMLAB/PyFMGUI/src/main.py
+python ./PyFMlab_DyNaMo/PyFMGUI_DyNaMo/src/main.py
 ```
 
 ## Generate executables
