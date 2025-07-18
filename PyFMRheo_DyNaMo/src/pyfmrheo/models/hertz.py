@@ -15,7 +15,7 @@ class HertzModel:
         self.ind_geom = ind_geom         # No units
         self.tip_parameter = tip_param   # If radius units is meters, If half angle units is degrees
         self.correction_model = correction_model
-        self.fit_method = 'leastsq'
+        self.fit_method = 'least_squares' #Least-Squares minimization, using Trust Region Reflective method
         # Compiutation params
         self.fit_hline_flag = False
         self.apply_correction_flag = False
