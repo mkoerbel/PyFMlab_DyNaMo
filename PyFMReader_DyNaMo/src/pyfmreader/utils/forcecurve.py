@@ -27,6 +27,7 @@ class ForceCurve:
     def __init__(self, curve_index, file_id):
         self.file_id = file_id
         self.curve_index = curve_index
+        self.z_at_setpoint = 0 # Z at setpoint in meters, last point of the zheight in extend segment 
         self.extend_segments = []
         self.retract_segments = []
         self.pause_segments = []
@@ -69,18 +70,24 @@ class ForceCurve:
         """
         Shifts the values of zheight using the last zheight value of the last retract segment.
         This operation is necessary to process JPK files.
+
+        UPDATED by YS and felix : 2025-07-25, the height is NOT Shifted, 
+        but only made negative for the rest  
+        created a new variable to store the zheight at setpoint 
         
-        xzero(m) = last zheight value of last retract segment
-        shifted zheight = xzero(m) − zheight(m)
+        xzero(m) = last zheight value of last retract segment (m)
+        shifted zheight = 0(m) − zheight(m)
 
                 Parameters: None
                 
                 Returns: None
         """
         xzero = self.retract_segments[-1][-1].zheight[-1] # Maximum height
+        self.z_at_setpoint = xzero 
         for _, segment in self.get_segments():
-                segment.zheight = xzero - segment.zheight
-        
+                #segment.zheight = xzero - segment.zheight
+                segment.zheight = 0 - segment.zheight
+
     def get_force_vs_indentation(self, poc, spring_constant):
         """
         Computes force vs indentation curve from deflection and piezo_height and populates
