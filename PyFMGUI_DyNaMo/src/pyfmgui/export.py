@@ -19,6 +19,8 @@ result_types = [
 ]
 
 def unpack_hertz_result(row_dict, hertz_result):
+    #this is to store the z height at the setpoint of from the force curve
+    row_dict['z_at_setpoint'] = hertz_result.z_at_setpoint
     row_dict['hertz_ind_geometry'] = hertz_result.ind_geom
     row_dict['hertz_tip_parameter'] = hertz_result.tip_parameter
     row_dict['hertz_apply_BEC'] = hertz_result.apply_correction_flag
@@ -36,7 +38,7 @@ def unpack_hertz_result(row_dict, hertz_result):
     row_dict['hertz_Rsquared'] = hertz_result.Rsquared
     row_dict['hertz_chisq'] = hertz_result.chisq
     row_dict['hertz_redchi'] = hertz_result.redchi
-    #this is to store the max indentation of a fitted force curve & sample height
+    #this is to store the max indentation of a fitted force curve &  poc of estimate
 
     row_dict['hertz_z_c'] = hertz_result.z_c
     row_dict['hertz_max_ind'] = hertz_result.max_ind
@@ -102,12 +104,16 @@ def get_file_results(result_type, file_metadata_and_results):
     file_path = filemetadata['file_path']
     k = filemetadata['spring_const_Nbym']
     defl_sens = filemetadata['defl_sens_nmbyV']
-    defl_sens = filemetadata['defl_sens_nmbyV']
-    num_x_px = int(filemetadata.get("num_x_pixels") )
-    num_y_px = int(filemetadata.get("num_y_pixels"))
-    #px size in m (for both jpk and nanscope files) 
-    scan_x_size = float(filemetadata.get("scan_size_x") )
-    scan_y_size = float(filemetadata.get("scan_size_y") )
+    num_x_px,num_y_px = 0,0
+    scan_x_size,scan_y_size=0,0
+    if bool(filemetadata['force_volume']):
+
+        num_x_px = int(filemetadata.get("num_x_pixels") )
+        num_y_px = int(filemetadata.get("num_y_pixels"))
+        #px size in m (for both jpk and nanscope files) 
+        scan_x_size = float(filemetadata.get("scan_size_x") )
+        scan_y_size = float(filemetadata.get("scan_size_y") )
+
     scan_size_m = json.dumps([scan_x_size,scan_y_size])
     map_size = json.dumps([num_x_px,num_y_px])
 
@@ -116,7 +122,7 @@ def get_file_results(result_type, file_metadata_and_results):
         curve_indx = curve_result[0]
         row_dict = {
             'file_path': file_path, 'file_id': file_id, 
-            'curve_idx': curve_indx, 'kcanti': k, 'defl_sens': defl_sens,
+            'curve_idx': curve_indx ,'kcanti': k, 'defl_sens': defl_sens,
             'scan_size_x_y_m': scan_size_m,'map_size_x_y_pixels': map_size,
         }
         try:

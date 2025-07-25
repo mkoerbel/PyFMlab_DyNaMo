@@ -15,7 +15,7 @@ class HertzModel:
         self.ind_geom = ind_geom         # No units
         self.tip_parameter = tip_param   # If radius units is meters, If half angle units is degrees
         self.correction_model = correction_model
-        self.fit_method = 'least_squares' #Least-Squares minimization, using Trust Region Reflective method
+        self.fit_method = 'leastsq' #leastsq is the default, Least-Squares minimization, using Trust Region Reflective method
         # Compiutation params
         self.fit_hline_flag = False
         self.apply_correction_flag = False
@@ -55,8 +55,10 @@ class HertzModel:
         self.redchi = None
         #this is to store the max indentation of a fitted force curve
         self.max_ind = None
-        #this is to store the sample height from a force curve
+        #this is to store the POC initial estimate
         self.z_c = None
+        #this is to store the Z height at setpoint in m
+        self.z_at_setpoint = None
 
     
     def get_correction_coeffs(self, sample_height, indentation):

@@ -69,7 +69,8 @@ def doHertzFit(fdc, param_dict):
     force = np.r_[ncont_force, cont_force]
     # Perform fit
     hertz_model = HertzModel(param_dict['contact_model'], param_dict['tip_param'])
-
+    #storing the Z at setpoint in the model better for export 
+    hertz_model.z_at_setpoint = fdc.z_at_setpoint
     hertz_model.fit_hline_flag = param_dict['fit_line']
     hertz_model.d0_init = param_dict['d0']
     if not param_dict['auto_init_E0']:
@@ -85,7 +86,7 @@ def doHertzFit(fdc, param_dict):
 
     hertz_model.fit(indentation, force)
 
-    hertz_model.z_c = poc[0]
+    hertz_model.z_c = -1*poc[0]
     true_indentation = indentation - hertz_model.delta0
     hertz_model.max_ind = np.max(true_indentation[true_indentation>0])
     # Return fitted model object

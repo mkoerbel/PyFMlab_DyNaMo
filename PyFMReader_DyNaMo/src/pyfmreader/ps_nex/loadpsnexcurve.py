@@ -93,7 +93,7 @@ def loadPSNEXcurve(file_metadata,curve_index = 0):
         if segment.segment_type == "App":
             force_curve.extend_segments.append((int(segment.segment_id), segment))
             #TODO check this value for the PSNEX file
-            force_curve.z_at_setpoint = segment.zheight[-1]
+            force_curve.z_at_setpoint = segment.segment_formated_data[height_channel_key][-1]
             print("success")
         elif segment.segment_type == "Ret":
             force_curve.retract_segments.append((int(segment.segment_id), segment))
