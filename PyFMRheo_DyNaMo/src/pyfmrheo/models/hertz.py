@@ -93,10 +93,6 @@ class HertzModel:
         # Define output array
         force = np.zeros(indentation.shape)
         
-        # Find the index where indentation is 0
-        idx = (np.abs(indentation - delta0)).argmin()
-        # Get the value of the contact point
-        delta0 = indentation[idx]
         # Get indenter shape coefficient and exponent
         coeff, n = get_coeff(self.ind_geom, self.tip_parameter, self.poisson_ratio)
         # Get bottom effect correction coefficients

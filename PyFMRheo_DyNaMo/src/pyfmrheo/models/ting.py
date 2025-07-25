@@ -19,7 +19,7 @@ class TingModel:
         # Model params #####################
         self.n_params = None
         # Scaling time
-        self.t0 = 0
+        self.t0 = 1
         # Apparent Young's Modulus
         self.E0 = 1000
         self.E0_init = 1000

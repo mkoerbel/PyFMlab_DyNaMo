@@ -52,9 +52,12 @@ def doHertzFit(fdc, param_dict):
     force = segment_data.force
 
     contact_mask = indentation >= 0
-    ncont_ind = indentation[~contact_mask]
+    #to reduce the number of points in the non-contact region, we use a contact offset
+    non_contact_mask = (indentation < 0)& (indentation>-1*param_dict['contact_offset'])
+
+    ncont_ind = indentation[non_contact_mask]
     cont_ind = indentation[contact_mask]
-    ncont_force = force[~contact_mask]
+    ncont_force = force[non_contact_mask]
     cont_force = force[contact_mask]
     if param_dict['fit_range_type'] == 'indentation':
         mask = (cont_ind >= param_dict['min_ind']) & (cont_ind <= param_dict['max_ind'])
@@ -76,6 +79,10 @@ def doHertzFit(fdc, param_dict):
         hertz_model.slope_init = param_dict['slope']
     if param_dict.get('fit_method', None) is not None:
         hertz_model.fit_method = param_dict['fit_method']
+    #constraining the bounds of delta0 form +- inf 
+    #hertz_model.delta0_max = np.max(segment_data.zheight)
+    #hertz_model.delta0_min = -hertz_model.delta0_max
+
     hertz_model.fit(indentation, force)
 
     hertz_model.z_c = poc[0]

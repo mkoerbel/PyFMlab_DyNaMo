@@ -217,8 +217,6 @@ class MainWindow(QtWidgets.QMainWindow):
 				"""
 			)
 			if fname != "" and fname is not None:
-                
-				print(fname)
 				self.load_files([fname])
 		elif q.text() == "Load Folder":
 			dirname = QtWidgets.QFileDialog.getExistingDirectory(
