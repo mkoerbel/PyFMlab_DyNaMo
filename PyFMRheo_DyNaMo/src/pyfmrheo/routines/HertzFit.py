@@ -81,13 +81,14 @@ def doHertzFit(fdc, param_dict):
     if param_dict.get('fit_method', None) is not None:
         hertz_model.fit_method = param_dict['fit_method']
     #constraining the bounds of delta0 form +- inf 
-    #hertz_model.delta0_max = np.max(segment_data.zheight)
-    #hertz_model.delta0_min = -hertz_model.delta0_max
+    hertz_model.delta0_max = np.max(segment_data.zheight)
+    hertz_model.delta0_min = -hertz_model.delta0_max
 
     hertz_model.fit(indentation, force)
 
     hertz_model.z_c = -1*poc[0]
     true_indentation = indentation - hertz_model.delta0
+    
     hertz_model.max_ind = np.max(true_indentation[true_indentation>0])
     # Return fitted model object
     return hertz_model
