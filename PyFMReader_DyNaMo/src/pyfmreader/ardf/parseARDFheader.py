@@ -41,7 +41,6 @@ def parseARDFheader(filepath):
 
     # Needed to avoid errors in the GUI
     header['height_channel_key'] = 'height'
-    header["invOLS_(nm/V)"] = float(file_struct['Notes']['InvOLS']) * 1e9
     header["defl_sens_nmbyV"] = float(file_struct['Notes']['InvOLS']) * 1e9
     header["spring_const_Nbym"] = float(file_struct['Notes']['SpringConstant']) # unit N/m
     

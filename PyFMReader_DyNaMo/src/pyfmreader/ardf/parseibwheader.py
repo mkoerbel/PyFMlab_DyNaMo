@@ -34,7 +34,6 @@ def parseIBWheader(filepath):
 
     # Needed to avoid errors in the GUI
     header['height_channel_key'] = 'height'
-    header["invOLS_(nm/V)"] = float(parameters['sensitivity']) * 1e9
     header["defl_sens_nmbyV"] = float(parameters['sensitivity']) * 1e9
     header["spring_const_Nbym"] = float(parameters['spring constant']) # unit N/m
     

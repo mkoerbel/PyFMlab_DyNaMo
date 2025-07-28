@@ -40,7 +40,7 @@ def loadIBWcurve(header, idx=0):
     force = data['force']  # newton
     height_measured = data['height (measured)']*-1  # m
     height_piezo = data['height (piezo)']*-1 # m
-    deflection = data['force'] / header['spring constant']*-1  # m
+    deflection = data['force'] / header['spring constant']  # m
 
     # Generate time channel from .ibw metadata
     # How much the sampling rate was reduced compared to maximum
@@ -53,8 +53,7 @@ def loadIBWcurve(header, idx=0):
     n_pts_per_sec = float(header['rate approach'])
     real_sampling_rate = n_pts_per_sec / force_decimation  # in Hz
     sampling_interval = 1 / real_sampling_rate
-    time = np.arange(len(force)) * sampling_interval * 1000 # seconds to ms
-
+    time = np.arange(len(force)) * sampling_interval  # seconds
 
     appsegment = Segment(file_name, '0', 'Approach')
     retsegment = Segment(file_name, '1', 'Retract')
@@ -78,7 +77,7 @@ def loadIBWcurve(header, idx=0):
     retsegment.segment_formated_data = {
         'height': height_measured[index_start_retract:index_end_retract],
         'vDeflection': deflection[index_start_retract:index_end_retract],
-        'time': time[index_start_retract:index_end_retract]
+        'time': time[index_start_retract:index_end_retract] - time[index_start_retract]
         }
     retsegment.nb_point = len(deflection[index_start_retract:index_end_retract])
     retsegment.force_setpoint_mode = 0

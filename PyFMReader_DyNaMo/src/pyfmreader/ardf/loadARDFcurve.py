@@ -34,11 +34,10 @@ def loadARDFcurve(header, idx):
     clean_channel_list = [s.rstrip('\x00') for s in header['channelList'][0]]
     
     # Removes the tail of 0s in the array (it is an artifact from parsing ARDF files)
-    # We need to multiply by -1 to change the sign of the data 
     last_nonzero_piezo = np.nonzero(ardf_data['y'][:, clean_channel_list.index('ZSnsr')])[0][-1]
     channel_data_piezo = (ardf_data['y'][:, clean_channel_list.index('ZSnsr')][:last_nonzero_piezo + 1])
     last_nonzero_deflection = np.nonzero(ardf_data['y'][:, clean_channel_list.index('Defl')])[0][-1]
-    channel_data_deflection = ardf_data['y'][:, clean_channel_list.index('Defl')][:last_nonzero_deflection + 1]*-1
+    channel_data_deflection = ardf_data['y'][:, clean_channel_list.index('Defl')][:last_nonzero_deflection + 1]
 
     # Generate time channel from .ARDF metadata
     # How much the sampling rate was reduced compared to maximum
@@ -75,7 +74,7 @@ def loadARDFcurve(header, idx):
     retsegment.segment_formated_data = {
         'height':channel_data_piezo[pnt_list[1]+1:len(channel_data_deflection)],
         'vDeflection': channel_data_deflection[pnt_list[1]+1:len(channel_data_deflection)],
-        'time': time[pnt_list[1]+1:len(channel_data_deflection)]
+        'time': time[pnt_list[1]+1:len(channel_data_deflection)]- time[pnt_list[1]]
         }
     retsegment.nb_point = len(channel_data_deflection[pnt_list[1]+1:len(channel_data_deflection)])
     retsegment.force_setpoint_mode = header['Notes']['TriggerType']

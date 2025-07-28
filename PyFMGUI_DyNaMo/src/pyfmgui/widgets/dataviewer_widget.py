@@ -184,7 +184,7 @@ class DataViewerWidget(QtWidgets.QWidget):
                 if self.session.current_file.filemetadata['file_type'] == "jpk-force-map":
                     curve_coords = np.asarray([row[::(-1)**i] for i, row in enumerate(curve_coords)])
                 curve_coords = np.rot90(np.fliplr(curve_coords))
-            elif self.session.current_file.filemetadata['file_type'] in cts.nanoscope_file_extensions:
+            elif self.session.current_file.filemetadata['file_type'] in cts.nanoscope_file_extensions+cts.asylum_file_extensions:
                 img = self.session.current_file.piezoimg
                 img = np.rot90(np.fliplr(img))
 
@@ -193,15 +193,7 @@ class DataViewerWidget(QtWidgets.QWidget):
                 rows, cols = shape[0], shape[1]
                 curve_coords = np.arange(cols*rows).reshape((cols, rows))
                 curve_coords = np.rot90(np.fliplr(curve_coords))
-            elif self.session.current_file.filemetadata['file_type'] in cts.asylum_file_extensions:
-                img = self.session.current_file.piezoimg
-                img = np.rot90(np.fliplr(img))
 
-                self.plotItem.setTitle("Piezo Height (μm)")
-                shape = img.shape
-                rows, cols = shape[0], shape[1]
-                curve_coords = np.arange(cols*rows).reshape((cols, rows))
-                curve_coords = np.rot90(np.fliplr(curve_coords))
 
             self.correlogram.setImage(img * 1e6)
             colorMap = pg.colormap.get('afmhot', source='matplotlib', skipCache=True)     # choose perceptually uniform, diverging color map
