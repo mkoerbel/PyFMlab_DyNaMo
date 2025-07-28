@@ -11,6 +11,7 @@ pyFM_VERSION = "PyFMLab v.1.0.2"
 # FILE CONSTANTS ##################################################
 jpk_file_extensions = ('jpk-force', 'jpk-force-map', 'jpk-qi-data')
 nanoscope_file_extensions = ('spm', 'pfc')
+asylum_file_extensions = ('ARDF', 'ibw')
 
 # ANALYSIS CONSTANTS ##############################################
 available_geometries = ['paraboloid', 'cone', 'pyramid']

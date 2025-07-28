@@ -9,6 +9,9 @@ from .jpk.loadjpkimg import computeJPKPiezoImg
 from .nanosc.loadnanosccurve import loadNANOSCcurve
 from .nanosc.loadnanoscimg import loadNANOSCimg
 from .ps_nex.loadpsnexcurve import loadPSNEXcurve
+from .ardf.loadARDFcurve import loadARDFcurve
+from .ardf.loadARDFimg import loadARDFimg
+from .ardf.loadibwcurve import loadIBWcurve
 from .load_uff import loadUFFcurve
 from .save_uff import saveUFFtxt
 
@@ -48,7 +51,9 @@ class UFF:
             - JPK --> .jpk-force, .jpk-force-map, .jpk-qi-data
             - NANOSCOPE --> .spm, .pfc
             - UFF --> .uff
-            - PS-NEX --> .tdms 
+            - PS-NEX --> .tdms
+            - IBW --> .ibw
+            - ARDF --> .ARDF
 
                 Parameters:
                         curveidx (int): Index of curve to load.
@@ -68,7 +73,11 @@ class UFF:
         elif file_type in ufffiles:
             FC = loadUFFcurve(self.filemetadata)
         elif file_type in psnexfiles:
-            FC = loadPSNEXcurve(self.filemetadata,curveidx)    
+            FC = loadPSNEXcurve(self.filemetadata,curveidx)
+        elif file_type in ibwfiles:
+            FC = loadIBWcurve(self.filemetadata, curveidx)
+        elif file_type in ARDFfiles:
+            FC = loadARDFcurve(self.filemetadata, curveidx)    
         return FC
 
     def getcurve(self, curveidx):
@@ -79,7 +88,9 @@ class UFF:
             - JPK --> .jpk-force, .jpk-force-map, .jpk-qi-data
             - NANOSCOPE --> .spm, .pfc
             - UFF --> .uff
-            - PS-NEX --> .tdms 
+            - PS-NEX --> .tdms
+            - IBW --> .ibw
+            - ARDF --> .ARDF
 
 
                 Parameters:
@@ -99,6 +110,10 @@ class UFF:
             FC = self._loadcurve(None, None, file_type)
         elif file_type in psnexfiles:
             FC = self._loadcurve(curveidx, None, file_type)
+        elif file_type in ibwfiles:
+            FC = self._loadcurve(curveidx, None, file_type)
+        elif file_type in ARDFfiles:
+            FC = self._loadcurve(curveidx, None, file_type)
         return FC
     
     def getpiezoimg(self):
@@ -110,6 +125,7 @@ class UFF:
         Supported formats:
             - JPK --> .jpk-force-map, .jpk-qi-data
             - NANOSCOPE --> .spm, .pfc
+            - Asylum Research --> .ARDF
 
                 Parameters: None
                 
@@ -121,6 +137,8 @@ class UFF:
             self.piezoimg = computeJPKPiezoImg(self)
         elif file_type[1:].isdigit() or file_type in nanoscfiles:
             self.piezoimg = loadNANOSCimg(self.filemetadata)
+        elif file_type in ARDFfiles:
+            self.piezoimg = loadARDFimg(self.filemetadata)
         return self.piezoimg
     
     def to_txt(self, savedir):

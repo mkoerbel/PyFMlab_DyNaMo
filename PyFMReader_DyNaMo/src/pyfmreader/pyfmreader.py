@@ -8,6 +8,8 @@ from .jpk.loadjpkfile import loadJPKfile
 from .jpk.loadjpkthermalfile import loadJPKThermalFile
 from .nanosc.loadnanoscfile import loadNANOSCfile
 from .ps_nex.loadpsnexfile import loadPSNEXfile
+from .ardf.loadARDFfile import loadARDFfile
+from .ardf.loadibwfile import loadIBWfile
 from .load_uff import loadUFFtxt
 from .uff import UFF
 from nptdms import TdmsFile
@@ -20,7 +22,9 @@ def loadfile(filepath):
         - JPK Thermal --> .tnd
         - NANOSCOPE --> .spm, .pfc, .00X
         - UFF --> .uff
-        - PS-NEX --> .tdms 
+        - PS-NEX --> .tdms
+        - IBW --> .ibw (Asylum files)
+        - ARDF --> .ARDF (Asylum force maps)
 
             Parameters:
                     filepath (str): Path to the file.
@@ -65,6 +69,13 @@ def loadfile(filepath):
             return loadPSNEXfile(filepath, uffobj)
         else:
             print('here you can you use any tdms file reading ')
+    
+    elif filesuffix in ibwfiles:
+        return loadIBWfile(filepath, uffobj)
+    
+    elif filesuffix in ARDFfiles:
+        print("is the best of the best")
+        return loadARDFfile(filepath, uffobj)
     
     else:
         Exception(f"Can not load file: {filepath}")
