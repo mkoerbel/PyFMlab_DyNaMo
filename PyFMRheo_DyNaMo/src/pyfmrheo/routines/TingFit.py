@@ -7,7 +7,7 @@ from ..models.ting import TingModel
 
 def doTingFit(fdc, param_dict):
     # Get data from the first extend segments and last retract segment
-    ext_data = fdc.extend_segments[0][1]
+    ext_data = fdc.extend_segments[-1][1]
     ret_data = fdc.retract_segments[-1][1]
     # Perform tilt correction
     height = np.r_[ext_data.zheight, ret_data.zheight]

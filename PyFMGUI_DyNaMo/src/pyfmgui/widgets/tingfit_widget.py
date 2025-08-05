@@ -272,7 +272,7 @@ class TingFitWidget(QtWidgets.QWidget):
                 except Exception:
                     continue
 
-        ext_data = force_curve.extend_segments[0][1]
+        ext_data = force_curve.extend_segments[-1][1]
         ret_data = force_curve.retract_segments[-1][1]
 
         self.p3.plot(ext_data.zheight, ext_data.vdeflection)

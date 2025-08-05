@@ -119,7 +119,7 @@ class DataViewerWidget(QtWidgets.QWidget):
         t0 = 0
         fc_segments = force_curve.get_segments()
         n_segments = len(fc_segments)
-        ext_data = force_curve.extend_segments[0][1]
+        ext_data = force_curve.extend_segments[-1][1]
         ret_data = force_curve.retract_segments[-1][1]
         t_offset = np.abs(ext_data.zheight[-1] - ret_data.zheight[0]) / (ext_data.velocity * -1e-9)
         dt = np.abs(ext_data.time[1] - ext_data.time[0])

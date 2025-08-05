@@ -232,7 +232,8 @@ def find_piezo_coord(nx,ny,file_ext = ''):
         
         piezoimg_corrd = np.asarray([row[::(-1)**i] for i, row in enumerate(piezoimg_corrd)])
 
-    map_corrd_2D = np.rot90(np.fliplr(piezoimg_corrd))
+    #map_corrd_2D = np.rot90(np.fliplr(piezoimg_corrd))
+    map_corrd_2D = np.rot90(piezoimg_corrd,k=-1)
 
     map_corrd_lin = map_corrd_2D.flatten()
     return map_corrd_2D, map_corrd_lin
@@ -252,7 +253,6 @@ def tiff_results(df_fileid, dirname, file_prefix, result_type):
     scan_size_x, scan_size_y = json.loads(first_row['scan_size_x_y_m'])
 
     Param1_lin = np.nan * np.ones(nx * ny)
-    Param2_lin = np.nan * np.ones(nx * ny)
     _, map_corrd_lin = find_piezo_coord(nx, ny, extension)
     N_curve = len(map_corrd_lin)
 
@@ -260,49 +260,38 @@ def tiff_results(df_fileid, dirname, file_prefix, result_type):
     result_id_1 = None
     result_id_2 = None
     if result_type == 'hertz_results':
-        result_id_1 = 'hertz_E'
-        result_id_2 = 'hertz_delta0'
+        df_fileid['log10_hertz_E'] = np.log10(df_fileid['hertz_E'].to_numpy())
+        results_id = ['hertz_E', 'hertz_delta0','z_at_setpoint']
     elif result_type == 'ting_results':
-        result_id_1 = 'ting_E0'
-        result_id_2 = 'ting_betaE'
+        print(result_type)
+        df_fileid['log10_ting_E0'] = np.log10(df_fileid['ting_E0'].to_numpy())
+        results_id = ['ting_E0', 'ting_betaE','z_at_setpoint']
     else:
+        #results_id = None
         # Unknown result_type
         return
 
-    for i in range(N_curve):
-        temp_cid = map_corrd_lin[i]
-        df_found = df_fileid[df_fileid['curve_idx'].isin([temp_cid])]
-        if len(df_found) == 1:
-            Param1_lin[i] = df_found[result_id_1].iloc[0]
-            Param2_lin[i] = df_found[result_id_2].iloc[0]
+    for res in results_id:
+        for i in range(N_curve):
+            temp_cid = map_corrd_lin[i]
+            df_found = df_fileid[df_fileid['curve_idx'].isin([temp_cid])]
+            if len(df_found) == 1:
+                Param1_lin[i] = df_found[res].iloc[0]
 
-    # Reshape and flip maps
-    Map_2d_1 = np.reshape(Param1_lin, (nx, ny))
-    Map_2d_1 = np.flipud(Map_2d_1)
-    Map_2d_2 = np.reshape(Param2_lin, (nx, ny))
-    Map_2d_2= np.flipud(Map_2d_2)
+        # Reshape and flip maps
+        Map_2d_1 = np.reshape(Param1_lin, (ny, nx))
+        #Map_2d_1 = np.flipud(Map_2d_1)
 
+        # Save TIFFs if arrays are valid
+        if Map_2d_1 is not None:
 
-    # Save TIFFs if arrays are valid
-    if Map_2d_1 is not None:
-
-        tifffile.imwrite(
-            os.path.join(dirname, f'{file_prefix}_{result_id_1}_{name}.tiff'),
-            Map_2d_1,
-            resolution=(nx * 1e-2 / scan_size_x, ny * 1e-2 / scan_size_y),
-            resolutionunit='CENTIMETER'
-        )
-        success_check += 1
-
-    if Map_2d_2 is not None:
-        tifffile.imwrite(
-            os.path.join(dirname, f'{file_prefix}_{result_id_2}_{name}.tiff'),
-            Map_2d_2,
-            resolution=(nx * 1e-2 / scan_size_x, ny * 1e-2 / scan_size_y),
-            resolutionunit='CENTIMETER'
-        )
-        success_check += 1
-        
+            tifffile.imwrite(
+                os.path.join(dirname, f'{file_prefix}_{res}_{name}.tiff'),
+                Map_2d_1,
+                resolution=(nx * 1e-2 / scan_size_x, ny * 1e-2 / scan_size_y),
+                resolutionunit='CENTIMETER'
+            )
+            success_check += 1
     return success_check
 
 def export_to_tiff(res, dirname, file_prefix, result_type):
@@ -314,6 +303,6 @@ def export_to_tiff(res, dirname, file_prefix, result_type):
             # hertz_colums = [s for s in df_fileid.columns if s.startswith('hertz')]
             # if len(hertz_colums) >1:
             success_check = tiff_results(df_fileid, dirname, file_prefix, result_type)
-            if success_check == 2:
+            if success_check > 1:
                 success_flag = True
     return success_flag

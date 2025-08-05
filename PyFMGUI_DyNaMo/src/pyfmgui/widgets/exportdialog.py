@@ -139,16 +139,18 @@ class ExportDialog(QtWidgets.QWidget):
             self.open_msg_box("Please provide a file prefix!")
             
     def get_df_for_tiff(self):
+        self.file_prefix = self.file_prefix_text.toPlainText()
+
         result_key = self.results_cb.currentText()
         self.results = self.session.prepared_results
         if result_key not in ['hertz_results','ting_results']:
             # self.table_preview.clear()
             self.open_msg_box("Export to TIFF not possible yet")
         else:
-            df_hertz = self.results[result_key]
-            success_flag = export_to_tiff(df_hertz, self.dirname, self.file_prefix, result_key)
+            df_res = self.results[result_key]
+            success_flag = export_to_tiff(df_res, self.dirname, self.file_prefix, result_key)
             if success_flag:
-                self.open_msg_box("Export was successful!")
+                self.open_msg_box("TIFF export was successful!")
             else:
                 self.open_msg_box("No results were found to export!")
 
