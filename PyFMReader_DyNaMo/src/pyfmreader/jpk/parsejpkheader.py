@@ -45,6 +45,10 @@ def parseJPKheader(filepath, header_properties, shared_data_properties, filesuff
         prefix = "quantitative-imaging-map"
         file_metadata['force_volume'] = 1
         pre_header = ".settings"
+    elif file_metadata["file_type"] == "jpk-qi-series":
+        prefix = "quantitative-imaging-series"
+        file_metadata['force_volume'] = 0
+        pre_header = ".header"
     elif file_metadata["file_type"] == "jpk-force":
         prefix = "force-scan-series"
         pre_header = ".header"
@@ -218,7 +222,7 @@ def parseJPKsegmentheader(curve_properties, curve_index, file_type, segment_head
         segment_metadata["baseline_measured"] = False
     segment_metadata["baseline"] = float(segment_header.get("force-segment-header.baseline.baseline", offset_default))
 
-    if file_type == "jpk-force":
+    if file_type in ("jpk-force", "jpk-qi-series"):
         segment_metadata["approach_id"] = segment_header.get("force-segment-header.approach-id")
         segment_metadata["style"] = segment_header.get("force-segment-header.settings.style")
 
