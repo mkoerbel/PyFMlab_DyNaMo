@@ -107,11 +107,8 @@ def parseJPKheader(filepath, header_properties, shared_data_properties, filesuff
             properties["encoder_type"] = shared_data_properties.get(pre + ".encoder.type")
             if properties["encoder_type"] is None: # Use higher-level data type descriptor and assume no decoding needs to be done
                 properties["encoder_type"] = shared_data_properties.get(pre + ".type")
-                properties["encoder_offet_key"] = 0.0
-                properties["encoder_multiplier_key"] = 1.0
-            else:
-                properties["encoder_offet_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.offset", offset_default))
-                properties["encoder_multiplier_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.multiplier", multiplier_default))
+            properties["encoder_offet_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.offset", offset_default))
+            properties["encoder_multiplier_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.multiplier", multiplier_default))
 
             properties["base"] = shared_data_properties.get(pre_conv + ".conversions.base")
             
@@ -151,11 +148,8 @@ def parseJPKheader(filepath, header_properties, shared_data_properties, filesuff
             properties["encoder_type"] = shared_data_properties.get(pre + ".encoder.type")
             if properties["encoder_type"] is None: # Use higher-level data type descriptor and assume no decoding needs to be done
                 properties["encoder_type"] = shared_data_properties.get(pre + ".type")
-                properties["encoder_offet_key"] = 0.0
-                properties["encoder_multiplier_key"] = 1.0
-            else:
-                properties["encoder_offet_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.offset", offset_default))
-                properties["encoder_multiplier_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.multiplier", scaling_factor))
+            properties["encoder_offet_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.offset", offset_default))
+            properties["encoder_multiplier_key"] = float(shared_data_properties.get(pre + ".encoder.scaling.multiplier", scaling_factor))
             
             properties["base"] = shared_data_properties.get(pre_conv + ".conversions.base")
 
